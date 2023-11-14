@@ -8,16 +8,16 @@ int main(int argc, char* argv[], char* envp[])
     exit(1);
   }
 
-  char* command = (char *) malloc(sizeof(char) * MAXLEN);
+  char* command = (char *) malloc(sizeof(char) * MAX_COMMAND_SIZE);
   do
   {
     printf("Introduza um comando: ");
-    fgets(command, MAXLEN, stdin);
-    commands(command);
+    fgets(command, MAX_COMMAND_SIZE, stdin);
+    validateAdminCommands(command);
   } while(strcmp(command, "end"));
 }
 
-void validateCommands(char* command)
+void validateAdminCommands(char* command)
 {
   char* commandAux = strtok(command, " \n");
   char* arg;
@@ -113,7 +113,7 @@ void endCommand()
 void testBotCommand(char* interval, char* duration) {
   int PID_bot, nBytes, state;
   int pipeBotMotor[2];
-  char* botInfo = (char *) malloc(sizeof(MAXLEN));
+  char* botInfo = (char *) malloc(sizeof(MAX_COMMAND_SIZE));
 
   // Verificação da correta criação do pipeBotMotor.
   if (pipe(pipeBotMotor) == -1)
@@ -155,8 +155,7 @@ void testBotCommand(char* interval, char* duration) {
     // Fecho do terminal do pipe que não será utilizado.
     close(pipeBotMotor[1]);
     while(1) {
-      // Recebe a informação do bot.
-      nBytes = read(pipeBotMotor[0], botInfo, MAXLEN);
+      nBytes = read(pipeBotMotor[0], botInfo, MAX_COMMAND_SIZE);
       if(nBytes == 0)
         break;
       printf("Recebi %d bytes do bot.\n", nBytes);

@@ -1,6 +1,11 @@
 #ifndef SO_TP_DATA_STRUCTS_H
 #define SO_TP_DATA_STRUCTS_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+
 //Constantes
 #define MAX_USERNAME_SIZE 30
 #define MAX_COMMAND_SIZE 50

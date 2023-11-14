@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "estruturas.h"
 
 void commands(char* command);
 void usersCommand();
