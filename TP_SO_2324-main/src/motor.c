@@ -17,7 +17,7 @@ int main(int argc, char* argv[], char* envp[])
   } while(strcmp(command, "end"));
 }
 
-void commands(char* command)
+void validateCommands(char* command)
 {
   char* commandAux = strtok(command, " \n");
   char* arg;

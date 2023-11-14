@@ -1,13 +1,18 @@
-all: motor jogoUI
+CC := gcc
+CFLAGS := -Wall -Wextra -std=c99
+SRC_DIR := ./src
+OUT_DIR := ./out
 
-motor: bot ./src/motor.c ./src/motor.h ./src/utils.h
-	gcc ./src/motor.c -o ./out/motor
+all: motor jogoUI bot
 
-jogoUI: ./src/jogoUI.c ./src/jogoUI.h ./src/utils.h
-	gcc ./src/jogoUI.c -o ./out/jogoUI
+motor: $(SRC_DIR)/motor.c $(SRC_DIR)/motor.h $(SRC_DIR)/utils.h bot
+	$(CC) $(CFLAGS) $< -o $(OUT_DIR)/$@
 
-bot: ./src/bot.c
-	gcc ./src/bot.c -o ./out/bot
+jogoUI: $(SRC_DIR)/jogoUI.c $(SRC_DIR)/jogoUI.h $(SRC_DIR)/utils.h
+	$(CC) $(CFLAGS) $< -o $(OUT_DIR)/$@
+
+bot: $(SRC_DIR)/bot.c
+	$(CC) $(CFLAGS) $< -o $(OUT_DIR)/$@
 
 clean:
-	rm -f ./out/*
+	rm -f $(OUT_DIR)/*

@@ -23,7 +23,7 @@ int main(int argc, char* argv[], char* envp[]) {
 }
 
 void validateCommands(char* command) {
-    char* commandAux = strtok(command, " \n");
+    char* commandAux = strtok(command, "\n");
     char username[MAX_USERNAME_SIZE];
     char msg[MAX_COMMAND_SIZE - MAX_USERNAME_SIZE - 2];
 
@@ -38,8 +38,7 @@ void validateCommands(char* command) {
         if(username[0] == '\0' || msg[0] == '\0') {
             printf("[ERRO] Syntax: msg <username> <message>\n");
         } else {
-            printf("username: %s\n", username);
-            printf("msg: %s\n", msg);
+            printf("%s: %s\n", username, msg);
             msgCommand(username, msg);
         }
     } else if(!strcmp(commandAux, "exit")) {
@@ -50,11 +49,11 @@ void validateCommands(char* command) {
     }
 }
 
-void playersCommand() {
+void playersCommand() { // Listar todos jogadores
     printf("\nComando [players] nao implementado.\n");
 }
 
-void msgCommand(char *username, char* msg) {
+void msgCommand(char *username, char* msg) { // Enviar mensagem privada a outro jogador
     printf("\nComando [msg] nao implementado.\n");
 }
 
