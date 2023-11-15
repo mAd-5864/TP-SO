@@ -9,6 +9,7 @@ void rbmCommand();
 void beginCommand();
 void endCommand();
 void testBotCommand(char* interval, char* duration);
+void readAndPrintMaze(char *filename);
 
 /* Listar jogadores atualmente a usar a plataforma: comando users
 ● Banir um jogador atualmente registado (porque sim): comando kick <nome do jogador>

@@ -1,7 +1,12 @@
 #include "motor.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 int main(int argc, char* argv[], char* envp[])
 {
+   char filename[] = "maze1.txt";
+   readAndPrintMaze(filename);
+
   if(argc != 1)
   {
     printf("[ERRO]: Argumento invalido.\n");
@@ -176,4 +181,18 @@ void testBotCommand(char* interval, char* duration) {
   }
 }
 
+void readAndPrintMaze(char *filename) {
+    FILE *file = fopen(filename, "r");
 
+    if (file == NULL) {
+        printf("\nError opening file %s", filename);
+        return;
+    }
+
+    char buffer[40]; // Um array unidimensional é suficiente para uma linha
+    while (fgets(buffer, sizeof(buffer), file) != NULL) {
+        printf("%s", buffer);
+    }
+
+    fclose(file);
+}
