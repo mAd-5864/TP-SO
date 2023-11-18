@@ -1,23 +1,16 @@
-########################################
-#E                       #              #
-#   # # # # # # # # #   # # # # # # # # #
-#       #   #           #               #
-# # #   #   #   # # # # # # # # # # # # #
-#       #   #               #           #
-#####   #   # # #   # # # # #   # # #   #
-#               #   #       #       #   #
-# # # # # # #   # # #   # # #   # # #   #
-#       #               #           #   #
-#####   # # #   #   # # # # #   #   #   #
-#       #       #   #       #       #   #
-#####   # # #   #   #   # # #   #   #   #
-#       #           #   #       #       #
-# # # # #   # # # #   #   # # #   #   # #
-#           #       #   #           #   #
-#   # # #   #   #   #   # # # # #   #   #
-#       #           #           #       #
-# # # # #   #####   #   #########   #   #
-#           #       #   #           #   #
-#########   #   #   #   #########   #   #
-#       #           #                   #
-#########################################
+xxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxx
+x                                      x
+x xxx xxx xxxxxx x xxxxxxxx       x x  x
+x x     x x      x x      x xxxxx x x  x
+x x xxx x x xxxx x x xxxx x x   x x x  x
+x x x     x x  x x x x    x x   x x x  x
+x x x x x   x  x x x x x    x   x x x  x
+x x x x xxx    x       x  x     x x x  x
+x   x x      x         xxxx xxxxx x x  x
+x x x x xxx  xxxx xxx               xx x
+x x x x x    x    x                    x
+x   x x      x x xxxxxxxxx x  xxx   xxxx
+x x      x   x x           x        x  x
+x xxxx   xxxxx xxxxxxxxxxxxxxxxxxx  x  x
+x                                      x
+xxxxx xxxxxx xxxxxx xxxxx  xxxxxx xxxxxx

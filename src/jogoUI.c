@@ -124,7 +124,8 @@ void msgCommand(char *username, char* msg, WINDOW* janela_mensagens) {
     wrefresh(janela_mensagens);
 }
 
-void exitCommand() {
+void exitCommand()
+{
     printf("\nComando [exit] nao implementado.\n");
 }
 

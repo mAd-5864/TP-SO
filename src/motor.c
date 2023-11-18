@@ -42,7 +42,7 @@ void validateAdminCommands(char* command)
       printf("[ERRO] Syntax: kick <username>\n");
     else
     {
-      printf("%s has been kicked\n", arg);
+      printf("Utilizador %s foi expulso\n", arg);
       kickCommand(arg);
     }
   }
@@ -179,11 +179,11 @@ void readAndPrintMaze(char *filename) {
     FILE *file = fopen(filename, "r");
 
     if (file == NULL) {
-        printf("\nError opening file %s\n", filename);
+        printf("\n[ERRO]: Erro ao abrir o ficheiro %s\n", filename);
         return;
     }
 
-    char buffer[40]; // Um array unidimensional é suficiente para uma linha
+    char buffer[40];
     while (fgets(buffer, sizeof(buffer), file) != NULL) {
         printf("%s", buffer);
     }
