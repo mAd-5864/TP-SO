@@ -1,5 +1,5 @@
 CC := gcc
-CFLAGS :=  
+CFLAGS := 
 SRC_DIR := ./src
 OUT_DIR := ./out
 
@@ -9,7 +9,7 @@ motor:
 	$(CC) $(CFLAGS) $(SRC_DIR)/motor.c -o $(OUT_DIR)/$@
 
 jogoUI: 
-	$(CC) $(CFLAGS) $(SRC_DIR)/jogoUI.c -o $(OUT_DIR)/$@
+	$(CC) $(CFLAGS) $(SRC_DIR)/jogoUI.c -o $(OUT_DIR)/$@ -lncurses
 
 bot: 
 	$(CC) $(CFLAGS) $(SRC_DIR)/bot.c -o $(OUT_DIR)/$@
