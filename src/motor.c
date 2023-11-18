@@ -1,10 +1,8 @@
 #include "motor.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 int main(int argc, char* argv[], char* envp[])
 {
-   char filename[] = "maze1.txt";
+   char filename[] = "../levels/maze1.txt";
    readAndPrintMaze(filename);
 
   if(argc != 1)
@@ -16,7 +14,7 @@ int main(int argc, char* argv[], char* envp[])
   char* command = (char *) malloc(sizeof(char) * MAX_COMMAND_SIZE);
   do
   {
-    printf("Introduza um comando: ");
+    printf("\n\nIntroduza um comando: ");
     fgets(command, MAX_COMMAND_SIZE, stdin);
     validateAdminCommands(command);
   } while(strcmp(command, "end"));
@@ -44,7 +42,7 @@ void validateAdminCommands(char* command)
       printf("[ERRO] Syntax: kick <username>\n");
     else
     {
-      printf("username: %s\n", arg);
+      printf("%s has been kicked\n", arg);
       kickCommand(arg);
     }
   }
@@ -125,14 +123,13 @@ void testBotCommand(char* interval, char* duration) {
   int pipeBotMotor[2];
   char* botInfo = (char *) malloc(sizeof(char)*MAX_COMMAND_SIZE);
 
-  // Verificação da correta criação do pipeBotMotor.
   if (pipe(pipeBotMotor) == -1)
   {
     printf("[ERRO]: Nao foi possível criar o pipe para comunicacao com o Bot.\n");
     exit(1);
   }
 
-  // Verificação da correta execução do fork.
+    // Cria processo Bot 
   PID_bot = fork();
   if (PID_bot == -1)
   {
@@ -140,7 +137,6 @@ void testBotCommand(char* interval, char* duration) {
     exit(2);
   }
 
-    // Bot (Child Process)
   if (PID_bot == 0)
   {
     close(pipeBotMotor[0]);
@@ -156,7 +152,6 @@ void testBotCommand(char* interval, char* duration) {
   }
   else
   {
-    // Motor (Parent process)
     printf("Bot PID: %d\n\n", PID_bot);
     close(pipeBotMotor[1]);
     while(1) {
@@ -177,7 +172,6 @@ void testBotCommand(char* interval, char* duration) {
       int x = atoi(xChar), y = atoi(yChar), d = atoi(dChar);
       printf("Recebi: %d %d %d\n\n", x, y, d);
     }
-    // printf("\nO bot terminou com %d.\n", WEXITSTATUS(state));
   }
 }
 
@@ -185,7 +179,7 @@ void readAndPrintMaze(char *filename) {
     FILE *file = fopen(filename, "r");
 
     if (file == NULL) {
-        printf("\nError opening file %s", filename);
+        printf("\nError opening file %s\n", filename);
         return;
     }
 
