@@ -1,9 +1,11 @@
 #ifndef SO_TP_DATA_STRUCTS_H
 #define SO_TP_DATA_STRUCTS_H
 
+//Bibliotecas
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <sys/types.h>
 
 //Constantes
