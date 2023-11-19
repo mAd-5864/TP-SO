@@ -1,21 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <curses.h>
+#include "jogoUI.h"
 
-#define MAX_USERNAME_SIZE 20
-#define MAX_COMMAND_SIZE 100
-
-// Function prototypes
-void validateCommands(char* command, WINDOW* janela_mensagens, WINDOW* janela_comandos);
-void playersCommand(WINDOW* janela_mensagens);
-void msgCommand(char *username, char* msg, WINDOW* janela_mensagens);
-void exitCommand();
-void desenhaMoldura(int alt, int comp, int linha, int coluna);
-
-int main(int argc, char* argv[], char* envp[]) {
-    if (argc != 2) {
+int main(int argc, char *argv[], char *envp[])
+{
+    if (argc != 2)
+    {
         printf("[ERRO]: Introduza o nome do jogador como argumento.\n");
         exit(1);
     }
@@ -25,29 +13,21 @@ int main(int argc, char* argv[], char* envp[]) {
     printf("Nome do jogador: %s\n\n", playerName);
 
     int sair;
-    WINDOW * janela_cursor, * janela_mensagens, * janela_comandos;
+    WINDOW *janela_jogo, *janela_comandos;
 
-    initscr(); // Inicializa o modo curses
+    initscr();     // Inicializa o modo curses
     start_color(); // Inicializa o suporte a cores
-    erase(); // Limpa a tela
-    noecho(); // Desabilita a exibição das teclas digitadas
-    cbreak(); // Desabilita o buffer de linha (entrada de caractere imediata)
+    erase();       // Limpa a tela
+    noecho();      // Desabilita a exibição das teclas digitadas
+    cbreak();      // Desabilita o buffer de linha (entrada de caractere imediata)
 
-    // Área do cursor
-    desenhaMoldura(16, 40, 1, 1);
-    janela_cursor = newwin(16, 40, 1, 1);
-    wrefresh(janela_cursor);
-
-    // Área das mensagens
-    desenhaMoldura(16, 40, 1, 45);
-    janela_mensagens = newwin(16, 40, 1, 45);
-    scrollok(janela_mensagens, TRUE);
-    wprintw(janela_mensagens, "MENSAGENS:\n");
-    wrefresh(janela_mensagens);
+    // Área do jogo
+    janela_jogo = newwin(16, 40, 1, 5);
+    box(janela_jogo, 0, 0);
+    wrefresh(janela_jogo);
 
     // Área dos comandos
-    desenhaMoldura(5, 100, 19, 1);
-    janela_comandos = newwin(5, 100, 19, 1);
+    janela_comandos = newwin(16, 60, 1, 50);
     box(janela_comandos, 0, 0);
     wrefresh(janela_comandos);
 
@@ -56,89 +36,171 @@ int main(int argc, char* argv[], char* envp[]) {
     int cursor_x = 1;
     int cursor_y = 1;
 
-    do {
-        ch = mvwgetch(janela_comandos, cursor_y, cursor_x);
+    WINDOW *active_window = janela_jogo; // Defenir janela inicial
 
-        // Process the input character
-        switch(ch) {
+    do
+    {
+        ch = mvwgetch(active_window, cursor_y, cursor_x);
+
+        if (active_window == janela_jogo)
+        {
+            mvwaddch(janela_jogo, cursor_y, cursor_x, ' ');
+            switch (ch)
+            {
+            case 37: // Left
+                if (cursor_x > 1)
+                {
+                    --cursor_x;
+                }
+                break;
+            case 39: // Right
+                if (cursor_x < 38)
+                {
+                    ++cursor_x;
+                }
+                break;
+            case 38: // Up
+                if (cursor_y > 1)
+                {
+                    --cursor_y;
+                }
+                break;
+            case 40: // Down
+                if (cursor_y < 14)
+                {
+                    ++cursor_y;
+                }
+                break;
+            case ' ': // Mudar para a janela_comandos
+                active_window = janela_comandos;
+                break;
+            default:
+                break;
+            }
+
+            // Atualizar posicao do jogador depois do moviemnto
+            // mvwaddch(janela_jogo, cursor_y, cursor_x, playerName[0]);
+            wrefresh(janela_jogo);
+        }
+        else
+        {
+            switch (ch)
+            {
             case '\n': // Enter key
-                command[cursor_x - 1] = '\0'; // Null-terminate the string
-                validateCommands(command, janela_mensagens, janela_comandos);
+                command[cursor_x - 1] = '\0';
                 cursor_x = 1;
+                mvwaddch(janela_comandos, ++cursor_y, cursor_x, ' ');
+                if (cursor_y > 14)
+                {
+                    cursor_y = 1;
+                    wclear(janela_comandos);
+                    wrefresh(janela_comandos);
+                    box(janela_comandos, 0, 0);
+                    mvwaddch(janela_comandos, cursor_y++, cursor_x, ' ');
+                }
+                else
+                {
+                    cursor_y++;
+                }
+                validateCommands(command, playerName, janela_comandos);
+
                 break;
             case 127: // Backspace key
-                if (cursor_x > 1) {
+                if (cursor_x > 1)
+                {
                     mvwaddch(janela_comandos, cursor_y, --cursor_x, ' ');
                 }
                 break;
+            case 27: // Esc key
+                active_window = janela_jogo; // Mudar de Janela
+                break;
             default:
-                if (cursor_x < 98) {
+                if (cursor_x < 98)
+                {
                     command[cursor_x - 1] = ch;
                     mvwaddch(janela_comandos, cursor_y, cursor_x++, ch);
                 }
                 break;
+            }
         }
 
-        wrefresh(janela_comandos);
+        wrefresh(active_window);
 
-    } while (strcmp(command, "exit") != 0);
+    } while (strcmp(command, "exit"));
 
     endwin(); // Encerra o modo curses
     return 0;
 }
 
-void validateCommands(char* command, WINDOW* janela_mensagens, WINDOW* janela_comandos) {
-    char* commandAux = strtok(command, "\n");
+void validateCommands(char *command, char *playerName, WINDOW *janela_comandos)
+{
+    char *commandAux = strtok(command, " \n");
 
-    if (!strcmp(commandAux, "players")) {
-        playersCommand(janela_mensagens);
-    } else if (!strcmp(commandAux, "msg")) {
+    if (!strcmp(commandAux, "players"))
+    {
+        playersCommand(janela_comandos);
+    }
+    else if (!strcmp(commandAux, "msg"))
+    {
         char username[MAX_USERNAME_SIZE];
         char msg[MAX_COMMAND_SIZE - MAX_USERNAME_SIZE - 2];
         username[0] = '\0';
         msg[0] = '\0';
-        strcat(username, strtok(NULL, " "));
-        strcat(msg, strtok(NULL, "\n"));
-        if (username[0] == '\0' || msg[0] == '\0') {
-            wprintw(janela_mensagens, "[ERRO] Syntax: msg <username> <message>\n");
-            wrefresh(janela_mensagens);
-        } else {
-            msgCommand(username, msg, janela_mensagens);
+        char *userToken = strtok(NULL, " ");
+        char *msgToken = strtok(NULL, "\n");
+        if (userToken == NULL || msgToken == NULL)
+        {
+            wprintw(janela_comandos, "[ERRO] Syntax: msg <username> <message>\n");
+            wrefresh(janela_comandos);
         }
-    } else if (!strcmp(commandAux, "exit")) {
+        else
+        {
+            strcat(username, userToken);
+            strcat(msg, msgToken);
+            msgCommand(playerName, username, msg, janela_comandos);
+        }
+    }
+    else if (!strcmp(commandAux, "exit"))
+    {
         exitCommand();
-    } else {
-        wprintw(janela_mensagens, "[ERRO]: Comando invalido.\n");
-        wrefresh(janela_mensagens);
+    }
+    else
+    {
+        wprintw(janela_comandos, "[ERRO]: Comando invalido.");
+        wrefresh(janela_comandos);
     }
 }
 
-void playersCommand(WINDOW* janela_mensagens) {
-    wprintw(janela_mensagens, "Comando [players] nao implementado.\n");
-    wrefresh(janela_mensagens);
+void playersCommand(WINDOW *janela_comandos)
+{
+    wrefresh(janela_comandos);
+    wprintw(janela_comandos, "Comando [players] nao implementado.");
 }
 
-void msgCommand(char *username, char* msg, WINDOW* janela_mensagens) {
-    // Display the message in the messages window
-    wprintw(janela_mensagens, "%s: %s\n", username, msg);
-    wrefresh(janela_mensagens);
+void msgCommand(char *playerName, char *username, char *msg, WINDOW *janela_comandos)
+{
+    wprintw(janela_comandos, "%s -> %s: %s", playerName, username, msg);
+    wrefresh(janela_comandos);
 }
 
 void exitCommand()
 {
-    printf("\nComando [exit] nao implementado.\n");
+    printf("Comando [exit] nao implementado.");
 }
 
-void desenhaMoldura(int alt, int comp, int linha, int coluna) {
+void desenhaMoldura(int alt, int comp, int linha, int coluna)
+{
     --linha;
     --coluna;
     alt += 2;
     comp += 2;
-    for (int l = linha; l <= linha + alt - 1; ++l) {
+    for (int l = linha; l <= linha + alt - 1; ++l)
+    {
         mvaddch(l, coluna, '|');
         mvaddch(l, coluna + comp - 1, '|');
     }
-    for (int c = coluna; c <= coluna + comp - 1; ++c) {
+    for (int c = coluna; c <= coluna + comp - 1; ++c)
+    {
         mvaddch(linha, c, '-');
         mvaddch(linha + alt - 1, c, '-');
     }

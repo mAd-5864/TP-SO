@@ -3,14 +3,10 @@
 
 #include "estruturas.h"
 
-
 // Declarar funções
-void validateCommands(char* command, WINDOW* janela_mensagens, WINDOW* janela_comandos);
-void playersCommand(WINDOW* janela_mensagens);
-void msgCommand(char *username, char* msg, WINDOW* janela_mensagens);
+void validateCommands(char *command, char *playerName, WINDOW *janela_comandos);
+void playersCommand(WINDOW *janela_comandos);
+void msgCommand(char *playerName, char *username, char *msg, WINDOW *janela_comandos);
 void exitCommand();
-void desenhaMoldura(int alt, int comp, int linha, int coluna);
-void getUserCredentials(Player* credentials);
 
 #endif
-
