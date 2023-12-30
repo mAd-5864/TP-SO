@@ -1,16 +1,25 @@
+#ifndef MOTOR_H
+#define MOTOR_H
 #include "estruturas.h"
 
-void validateAdminCommands(char* command);
-void usersCommand();
-void kickCommand(char *username);
-void botsCommand();
-void bmovCommand();
-void rbmCommand();
-void beginCommand();
-void endCommand();
-void testBotCommand(char* interval, char* duration);
-void readAndPrintMaze(char *filename);
-
+void validateAdminCommands(WINDOW *cmd_win, char *command);
+void usersCommand(WINDOW *cmd_win);
+void kickCommand(WINDOW *cmd_win, char *username);
+void botsCommand(WINDOW *cmd_win);
+void bmovCommand(WINDOW *cmd_win);
+void rbmCommand(WINDOW *cmd_win);
+void beginCommand(WINDOW *cmd_win);
+void endCommand(WINDOW *cmd_win);
+void testBotCommand(WINDOW *cmd_win, char* interval, char* duration);
+void initMaze(char *filename);
+void printMaze(WINDOW *win, char maze[ROWS][COLS]);
+void setupMotor();
+void *lerRegistosThread();
+void playerQueque();
+void generateStartPos(Game *gameInfo);
+void serializeGameInfo(const Game *gameInfo, char *buffer, size_t bufferSize);
+void sendGameStateToAllPlayers(const Game *gameInfo);
+#endif
 /* Listar jogadores atualmente a usar a plataforma: comando users
 ● Banir um jogador atualmente registado (porque sim): comando kick <nome do jogador>
 Tem o mesmo efeito que o comando exit feito pelo jogador (pode voltar a entrar). O utilizador em questão é
