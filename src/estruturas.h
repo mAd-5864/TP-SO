@@ -35,6 +35,7 @@ typedef struct
     int y;
 } Position;
 
+
 typedef struct
 {
     char username[MAX_USERNAME_SIZE];
