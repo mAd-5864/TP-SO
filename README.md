@@ -1,4 +1,3 @@
-# TP-SO
 # Multiplayer Labyrinth Game
 **Operating Systems ISEC 2023/24**
 
